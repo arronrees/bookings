@@ -1,0 +1,71 @@
+{
+  "kind": "collectionType",
+  "collectionName": "events",
+  "info": {
+    "singularName": "event",
+    "pluralName": "events",
+    "displayName": "Event",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "location": {
+      "type": "string",
+      "required": true
+    },
+    "date": {
+      "type": "datetime",
+      "required": true
+    },
+    "ticketAllocation": {
+      "type": "integer",
+      "min": 0,
+      "required": true
+    },
+    "ticketsAvailable": {
+      "type": "integer",
+      "min": 0,
+      "required": true
+    },
+    "cost": {
+      "type": "decimal",
+      "min": 0,
+      "required": true
+    },
+    "availability": {
+      "type": "enumeration",
+      "enum": [
+        "Available",
+        "Unavailable",
+        "Sold Out"
+      ],
+      "default": "Unavailable",
+      "required": true
+    },
+    "bookings": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::booking.booking",
+      "private": true
+    },
+    "image": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    }
+  }
+}
