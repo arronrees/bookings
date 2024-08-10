@@ -1,67 +1,53 @@
-'use server';
-import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 
-const secretKey = process.env.SESSION_SECRET;
-const key = new TextEncoder().encode(secretKey);
+import { SessionOptions, getIronSession } from 'iron-session';
+import { revalidatePath } from 'next/cache';
 
-export async function encrypt(payload: any) {
-  return await new SignJWT(payload)
-    .setProtectedHeader({ alg: 'HS256' })
-    .setIssuedAt()
-    .setExpirationTime('10 sec from now')
-    .sign(key);
+export interface SessionData {
+  userId?: number;
+  isLoggedIn: boolean;
+  token: string;
 }
 
-export async function decrypt(input: string): Promise<any> {
-  const { payload } = await jwtVerify(input, key, {
-    algorithms: ['HS256'],
-  });
-  return payload;
-}
+export const defaultSession: SessionData = {
+  userId: undefined,
+  isLoggedIn: false,
+  token: '',
+};
 
-export async function createSession(userId: string, token: string) {
-  const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-  const session = await encrypt({ userId, expires, token });
+export const sessionOptions: SessionOptions = {
+  password: process.env.SESSION_SECRET as string,
+  cookieName: 'bookings',
+  cookieOptions: {
+    secure: process.env.NODE_ENV === 'production',
+  },
+};
 
-  cookies().set('session', session, {
-    httpOnly: true,
-    secure: true,
-    expires,
-    sameSite: 'lax',
-    path: '/',
-  });
-}
+export async function getSession(): Promise<SessionData> {
+  const session = await getIronSession<SessionData>(cookies(), sessionOptions);
 
-export async function updateSession() {
-  const session = cookies().get('session')?.value;
-
-  if (!session) {
-    return null;
+  if (!session.isLoggedIn) {
+    session.isLoggedIn = defaultSession.isLoggedIn;
+    session.userId = defaultSession.userId;
+    session.token = defaultSession.token;
   }
 
-  const payload = await decrypt(session);
-
-  if (!payload) {
-    return null;
-  }
-
-  const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-  cookies().set('session', session, {
-    httpOnly: true,
-    secure: true,
-    expires,
-    sameSite: 'lax',
-    path: '/',
-  });
+  return session;
 }
 
 export async function deleteSession() {
-  cookies().delete('session');
+  const session = await getSession();
+  session.destroy();
+  revalidatePath('/');
 }
 
-export async function getSession() {
-  const session = cookies().get('session')?.value;
-  if (!session) return null;
-  return await decrypt(session);
+export async function createSession(userId: number, token: string) {
+  const session = await getSession();
+
+  session.userId = userId;
+  session.isLoggedIn = true;
+  session.token = token;
+
+  await session.save();
+  revalidatePath('/');
 }

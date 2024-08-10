@@ -2,7 +2,7 @@
 
 import { API_URL } from '@/constants';
 import axios from 'axios';
-import { createSession } from '../session';
+import { createSession, deleteSession } from '../session';
 import {
   checkUserSigninObjectValid,
   checkUserSignupObjectValid,
@@ -39,8 +39,16 @@ export async function signup(
     await createSession(response.data.user.id, response.data.jwt);
 
     return { errorMessage: null, success: true };
-  } catch (err) {
+  } catch (err: any) {
+    console.error('Axios Error: ');
     console.error(err);
+
+    if (err?.response?.data?.error?.message) {
+      return {
+        errorMessage: err?.response?.data?.error?.message,
+        success: false,
+      };
+    }
 
     return {
       errorMessage: 'Could not register, please try again later',
@@ -86,4 +94,9 @@ export async function login(
       success: false,
     };
   }
+}
+
+export async function logout() {
+  await deleteSession();
+  return;
 }

@@ -1,6 +1,14 @@
+import { getSession } from '@/app/lib/session';
 import RegisterForm from '@/components/auth/RegisterForm';
+import { redirect } from 'next/navigation';
 
-export default function Register() {
+export default async function Register() {
+  const session = await getSession();
+
+  if (session.token) {
+    return redirect('/');
+  }
+
   return (
     <div>
       <h1 className='text-2xl mb-8 text-center font-semibold'>Register</h1>

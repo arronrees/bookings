@@ -1,11 +1,13 @@
+import { getSession } from '@/app/lib/session';
 import LoginForm from '@/components/auth/LoginForm';
+import { redirect } from 'next/navigation';
 
 export default async function Login() {
-  const token = await fetch('http://localhost:3000/api/auth/get-token').then(
-    (res) => res.json()
-  );
+  const session = await getSession();
 
-  console.log(token);
+  if (session.token) {
+    return redirect('/');
+  }
 
   return (
     <div>
