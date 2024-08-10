@@ -14,7 +14,7 @@ export default async function EventPage({
 
   async function fetchEvent() {
     const data = await fetch(
-      `${API_URL}/api/events/${params.id}?populate=image`
+      `${API_URL}/api/events/${params.id}?populate=image&filters`
     ).then((res) => res.json());
 
     return data.data as Event;
@@ -22,7 +22,7 @@ export default async function EventPage({
 
   const event = await fetchEvent();
 
-  console.log(event.attributes.image.data.attributes.formats);
+  console.log(event);
 
   return (
     <div>
@@ -58,17 +58,26 @@ export default async function EventPage({
             >
               {event.attributes.availability}
             </span>
-            <span className='text-xs rounded-full py-1 px-3 bg-indigo-100'>
+            <span
+              className={`text-xs rounded-full py-1 px-3 bg-indigo-100 ${
+                event.attributes.ticketsAvailable == 0
+                  ? 'bg-red-100'
+                  : 'bg-indigo-100'
+              }`}
+            >
               {event.attributes.ticketsAvailable} tickets remaining
             </span>
           </div>
           <p className='font-light text-sm'>{event.attributes.description}</p>
-          <button
-            type='button'
-            className='mt-6 rounded bg-indigo-700 text-white py-2 px-4 max-w-max hover:bg-indigo-800 focus:bg-indigo-800 active:bg-indigo-900'
-          >
-            Buy Ticket
-          </button>
+          {event.attributes.availability === 'Available' &&
+            event.attributes.ticketsAvailable > 0 && (
+              <button
+                type='button'
+                className='mt-6 rounded bg-indigo-700 text-white py-2 px-4 max-w-max hover:bg-indigo-800 focus:bg-indigo-800 active:bg-indigo-900'
+              >
+                Buy Ticket
+              </button>
+            )}
         </div>
       </section>
     </div>
