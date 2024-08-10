@@ -1,4 +1,4 @@
-import 'server-only';
+'use server';
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 
@@ -24,7 +24,7 @@ export async function createSession(userId: string, token: string) {
   const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
   const session = await encrypt({ userId, expires, token });
 
-  cookies().set('bookings_session', session, {
+  cookies().set('session', session, {
     httpOnly: true,
     secure: true,
     expires,
@@ -34,7 +34,7 @@ export async function createSession(userId: string, token: string) {
 }
 
 export async function updateSession() {
-  const session = cookies().get('bookings_session')?.value;
+  const session = cookies().get('session')?.value;
 
   if (!session) {
     return null;
@@ -47,7 +47,7 @@ export async function updateSession() {
   }
 
   const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-  cookies().set('bookings_session', session, {
+  cookies().set('session', session, {
     httpOnly: true,
     secure: true,
     expires,
@@ -56,12 +56,12 @@ export async function updateSession() {
   });
 }
 
-export function deleteSession() {
-  cookies().delete('bookings_session');
+export async function deleteSession() {
+  cookies().delete('session');
 }
 
 export async function getSession() {
-  const session = cookies().get('bookings_session')?.value;
+  const session = cookies().get('session')?.value;
   if (!session) return null;
   return await decrypt(session);
 }

@@ -1,6 +1,12 @@
 import LoginForm from '@/components/auth/LoginForm';
 
-export default function Login() {
+export default async function Login() {
+  const token = await fetch('http://localhost:3000/api/auth/get-token').then(
+    (res) => res.json()
+  );
+
+  console.log(token);
+
   return (
     <div>
       <h1 className='text-2xl mb-8 text-center font-semibold'>Login</h1>

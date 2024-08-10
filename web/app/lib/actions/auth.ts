@@ -1,6 +1,8 @@
+'use server';
+
 import { API_URL } from '@/constants';
 import axios from 'axios';
-import { createSession } from '../sessions';
+import { createSession } from '../session';
 import {
   checkUserSigninObjectValid,
   checkUserSignupObjectValid,
@@ -80,7 +82,7 @@ export async function login(
     console.error(err);
 
     return {
-      errorMessage: 'Could not register, please try again later',
+      errorMessage: 'Invalid credentials, please try again',
       success: false,
     };
   }
