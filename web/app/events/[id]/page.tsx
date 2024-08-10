@@ -73,10 +73,7 @@ export default async function EventPage({
           <p className='font-light text-sm'>{event.attributes.description}</p>
           {event.attributes.availability === 'Available' &&
             event.attributes.ticketsAvailable > 0 && (
-              <button
-                type='button'
-                className='mt-6 rounded bg-indigo-700 text-white py-2 px-4 max-w-max hover:bg-indigo-800 focus:bg-indigo-800 active:bg-indigo-900'
-              >
+              <button type='button' className='btn mt-6 max-w-max'>
                 Buy Ticket
               </button>
             )}

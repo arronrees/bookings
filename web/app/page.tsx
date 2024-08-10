@@ -72,10 +72,7 @@ export default async function Home() {
                   </p>
                   {event.attributes.availability === 'Available' &&
                     event.attributes.ticketsAvailable > 0 && (
-                      <a
-                        href={`/events/${event.id}`}
-                        className='rounded bg-indigo-700 text-white py-2 px-4 max-w-max hover:bg-indigo-800 focus:bg-indigo-800 active:bg-indigo-900'
-                      >
+                      <a href={`/events/${event.id}`} className='btn max-w-max'>
                         View More
                       </a>
                     )}
