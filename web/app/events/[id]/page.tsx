@@ -22,7 +22,9 @@ export default async function EventPage({
 
   const event = await fetchEvent();
 
-  console.log(event);
+  if (!event) {
+    return redirect('/');
+  }
 
   return (
     <div>
