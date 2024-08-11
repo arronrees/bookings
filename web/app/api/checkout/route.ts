@@ -168,7 +168,7 @@ export async function POST(request: Request) {
       }/success?quantity=${quantity}&cost=${
         event.attributes.cost
       }&date=${new Date().toDateString()}&booking_id=${newBooking.data.id}`,
-      cancel_url: `${SITE_URL}/events/${event.id}`,
+      cancel_url: `${SITE_URL}/events/${event.id}/cancel?booking_id=${newBooking.data.id}`,
     });
 
     return new Response(

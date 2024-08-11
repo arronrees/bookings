@@ -12,6 +12,14 @@ export default (config, { strapi }: { strapi: Strapi }) => {
     let entry: any = null;
     let entries: any = null;
 
+    // skip if accessing via api token
+    if (
+      ctx.state?.isAuthenticated &&
+      ctx.state?.auth?.strategy?.name === "api-token"
+    ) {
+      return next();
+    }
+
     /**
      * Gets all information about a given entry,
      * populating every relations to ensure
