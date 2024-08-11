@@ -20,7 +20,8 @@ export default async function Cancel({
 
   async function fetchEvent() {
     const data = await fetch(
-      `${API_URL}/api/events/${params.id}?populate=image`
+      `${API_URL}/api/events/${params.id}?populate=image`,
+      { cache: 'no-store' }
     ).then((res) => res.json());
 
     return data.data as Event;
@@ -38,6 +39,7 @@ export default async function Cancel({
       headers: {
         Authorization: `Bearer ${API_KEY}`,
       },
+      cache: 'no-store',
     }
   ).then((res) => res.json());
 
@@ -50,6 +52,7 @@ export default async function Cancel({
           'Content-Type': 'application/json',
           Authorization: `Bearer ${API_KEY}`,
         },
+        cache: 'no-store',
         body: JSON.stringify({
           data: {
             ticketsAvailable:
@@ -67,6 +70,7 @@ export default async function Cancel({
         headers: {
           Authorization: `Bearer ${API_KEY}`,
         },
+        cache: 'no-store',
       }
     );
   }

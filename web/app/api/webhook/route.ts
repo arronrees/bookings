@@ -39,6 +39,7 @@ export async function POST(request: Request) {
         `${API_URL}/api/bookings/${data.metadata?.bookingId}`,
         {
           method: 'PUT',
+          cache: 'no-store',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${API_KEY}`,

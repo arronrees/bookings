@@ -16,7 +16,7 @@ export default function CheckoutForm({ event }: { event: Event }) {
     setPending(true);
 
     const data = await fetch('/api/checkout', {
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', cache: 'no-store' },
       body: JSON.stringify({ event, quantity }),
       method: 'POST',
     }).then((res) => res.json());

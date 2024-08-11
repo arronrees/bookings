@@ -64,6 +64,7 @@ export async function POST(request: Request) {
   async function fetchUser() {
     const data = await fetch(`${API_URL}/api/users/me`, {
       headers: { Authorization: `Bearer ${session.token}` },
+      cache: 'no-store',
     }).then((res) => res.json());
 
     return data as User;
@@ -89,6 +90,7 @@ export async function POST(request: Request) {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${API_KEY}`,
     },
+    cache: 'no-store',
     body: JSON.stringify({
       data: {
         user: { connect: [user.id] },
@@ -120,6 +122,7 @@ export async function POST(request: Request) {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${API_KEY}`,
       },
+      cache: 'no-store',
       body: JSON.stringify({
         data: {
           ticketsAvailable: event.attributes.ticketsAvailable - quantity,

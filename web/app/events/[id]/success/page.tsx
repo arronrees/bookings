@@ -25,7 +25,8 @@ export default async function CheckoutPage({
 
   async function fetchEvent() {
     const data = await fetch(
-      `${API_URL}/api/events/${params.id}?populate=image`
+      `${API_URL}/api/events/${params.id}?populate=image`,
+      { cache: 'no-store' }
     ).then((res) => res.json());
 
     return data.data as Event;

@@ -5,7 +5,8 @@ import Image from 'next/image';
 export default async function Home() {
   async function fetchEvents() {
     const data = await fetch(
-      `${API_URL}/api/events?populate=image&filters[availability][$ne]=Unavailable`
+      `${API_URL}/api/events?populate=image&filters[availability][$ne]=Unavailable`,
+      { cache: 'no-store' }
     ).then((res) => res.json());
 
     return data.data as Event[];

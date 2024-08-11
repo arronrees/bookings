@@ -16,6 +16,7 @@ export default async function MyBookings() {
       `${API_URL}/api/bookings?populate[event][populate][0]=image`,
       {
         headers: { Authorization: `Bearer ${session.token}` },
+        cache: 'no-store',
       }
     ).then((res) => res.json());
 
