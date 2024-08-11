@@ -1,3 +1,5 @@
+import { getSession } from '@/app/lib/session';
+import CheckoutForm from '@/components/CheckoutForm';
 import { Event } from '@/constant.types';
 import { API_URL } from '@/constants';
 import Image from 'next/image';
@@ -14,7 +16,7 @@ export default async function EventPage({
 
   async function fetchEvent() {
     const data = await fetch(
-      `${API_URL}/api/events/${params.id}?populate=image&filters`
+      `${API_URL}/api/events/${params.id}?populate=image`
     ).then((res) => res.json());
 
     return data.data as Event;
@@ -26,13 +28,12 @@ export default async function EventPage({
     return redirect('/');
   }
 
+  const session = await getSession();
+
   return (
     <div>
-      <h1 className='text-2xl mb-8 text-center font-semibold'>
-        {event.attributes.title}
-      </h1>
       <section className='grid gap-4 md:gap-6 max-w-2xl mx-auto'>
-        <div className='relative h-[400px]'>
+        <div className='relative h-[350px]'>
           <Image
             src={`${API_URL}${event.attributes.image.data.attributes.url}`}
             alt=''
@@ -71,12 +72,17 @@ export default async function EventPage({
             </span>
           </div>
           <p className='font-light text-sm'>{event.attributes.description}</p>
-          {event.attributes.availability === 'Available' &&
+
+          {session.isLoggedIn ? (
+            event.attributes.availability === 'Available' &&
             event.attributes.ticketsAvailable > 0 && (
-              <button type='button' className='btn mt-6 max-w-max'>
-                Buy Ticket
-              </button>
-            )}
+              <CheckoutForm eventId={event.id} />
+            )
+          ) : (
+            <a href='/auth/login' className='btn max-w-max mt-4'>
+              Login to buy ticket
+            </a>
+          )}
         </div>
       </section>
     </div>

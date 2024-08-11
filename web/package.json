@@ -9,11 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@stripe/react-stripe-js": "^2.7.3",
+    "@stripe/stripe-js": "^4.2.0",
     "axios": "^1.7.3",
+    "iron-session": "^8.0.2",
     "jose": "^5.6.3",
-    "next": "14.2.5",
+    "next": "^14.2.5",
     "react": "^18",
     "react-dom": "^18",
+    "stripe": "^16.7.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
