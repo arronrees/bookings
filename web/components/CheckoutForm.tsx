@@ -1,9 +1,10 @@
 'use client';
 
+import { Event } from '@/constant.types';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-export default function CheckoutForm({ eventId }: { eventId: number }) {
+export default function CheckoutForm({ event }: { event: Event }) {
   const router = useRouter();
 
   const [quantity, setQuantity] = useState<number>(1);
@@ -16,9 +17,13 @@ export default function CheckoutForm({ eventId }: { eventId: number }) {
 
     const data = await fetch('/api/checkout', {
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ eventId, quantity }),
+      body: JSON.stringify({ event, quantity }),
       method: 'POST',
     }).then((res) => res.json());
+
+    if (!data || data.error) {
+      console.log(data);
+    }
 
     if (data.data) {
       router.push(data.data);
@@ -31,7 +36,7 @@ export default function CheckoutForm({ eventId }: { eventId: number }) {
     <form
       onSubmit={handleTicketPurchase}
       method='POST'
-      className='flex items-center gap-2 mt-6'
+      className='flex items-center gap-2'
     >
       <input
         type='number'

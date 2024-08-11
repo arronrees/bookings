@@ -1,6 +1,6 @@
 import { getSession } from '@/app/lib/session';
 import { Event, User } from '@/constant.types';
-import { API_URL, SITE_URL } from '@/constants';
+import { API_KEY, API_URL, SITE_URL } from '@/constants';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
@@ -8,9 +8,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 });
 
 export async function POST(request: Request) {
-  const { eventId, quantity } = await request.json();
+  const { event, quantity }: { event: Event; quantity: number } =
+    await request.json();
 
-  if (!eventId) {
+  if (!event) {
     return new Response(
       JSON.stringify({
         success: false,
@@ -44,28 +45,6 @@ export async function POST(request: Request) {
       }),
       {
         status: 401,
-      }
-    );
-  }
-
-  async function fetchEvent() {
-    const data = await fetch(
-      `${API_URL}/api/events/${eventId}?populate=image`
-    ).then((res) => res.json());
-
-    return data.data as Event;
-  }
-
-  const event = await fetchEvent();
-
-  if (!event) {
-    return new Response(
-      JSON.stringify({
-        success: false,
-        error: 'No event found',
-      }),
-      {
-        status: 404,
       }
     );
   }
@@ -104,11 +83,67 @@ export async function POST(request: Request) {
     );
   }
 
+  const newBooking = await fetch(`${API_URL}/api/bookings`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${API_KEY}`,
+    },
+    body: JSON.stringify({
+      data: {
+        user: user.id,
+        event: event.id,
+        status: 'Processing',
+        quantity,
+        amount_total: quantity * event.attributes.cost,
+      },
+    }),
+  }).then((res) => res.json());
+
+  if (!newBooking) {
+    return new Response(
+      JSON.stringify({
+        success: false,
+        error: 'Could not create booking',
+      }),
+      {
+        status: 500,
+      }
+    );
+  }
+
+  const updateTicketAvailablity = await fetch(
+    `${API_URL}/api/events/${event.id}`,
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${API_KEY}`,
+      },
+      body: JSON.stringify({
+        data: {
+          ticketsAvailable: event.attributes.ticketsAvailable - quantity,
+        },
+      }),
+    }
+  );
+
+  if (!updateTicketAvailablity) {
+    return new Response(
+      JSON.stringify({
+        success: false,
+        error: 'Could not create booking',
+      }),
+      {
+        status: 500,
+      }
+    );
+  }
+
   try {
     const session = await stripe.checkout.sessions.create({
       metadata: {
-        userId: user.id,
-        eventId: event.id,
+        bookingId: newBooking.data.id,
       },
       customer_email: user.email,
       mode: 'payment',
@@ -128,8 +163,12 @@ export async function POST(request: Request) {
           quantity,
         },
       ],
-      success_url: `${SITE_URL}/events/${eventId}/success`,
-      cancel_url: `${SITE_URL}/events/${eventId}`,
+      success_url: `${SITE_URL}/events/${
+        event.id
+      }/success?quantity=${quantity}&cost=${
+        event.attributes.cost
+      }&date=${new Date().toDateString()}&booking_id=${newBooking.data.id}`,
+      cancel_url: `${SITE_URL}/events/${event.id}`,
     });
 
     return new Response(

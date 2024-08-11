@@ -374,7 +374,7 @@ export interface ApiBookingBooking extends Schema.CollectionType {
     draftAndPublish: true;
   };
   attributes: {
-    amount: Attribute.Decimal &
+    amount_total: Attribute.Decimal &
       Attribute.Required &
       Attribute.SetMinMax<
         {
@@ -383,7 +383,7 @@ export interface ApiBookingBooking extends Schema.CollectionType {
         number
       >;
     status: Attribute.Enumeration<['Paid', 'Processing', 'Cancelled']>;
-    stripeData: Attribute.JSON;
+    stripeData: Attribute.JSON & Attribute.Private;
     event: Attribute.Relation<
       'api::booking.booking',
       'oneToOne',
@@ -394,6 +394,14 @@ export interface ApiBookingBooking extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.user'
     >;
+    quantity: Attribute.Integer &
+      Attribute.Required &
+      Attribute.SetMinMax<
+        {
+          min: 1;
+        },
+        number
+      >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

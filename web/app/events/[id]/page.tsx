@@ -72,17 +72,24 @@ export default async function EventPage({
             </span>
           </div>
           <p className='font-light text-sm'>{event.attributes.description}</p>
-
-          {session.isLoggedIn ? (
-            event.attributes.availability === 'Available' &&
-            event.attributes.ticketsAvailable > 0 && (
-              <CheckoutForm eventId={event.id} />
-            )
-          ) : (
-            <a href='/auth/login' className='btn max-w-max mt-4'>
-              Login to buy ticket
-            </a>
-          )}
+          <div className='flex gap-2 items-center mt-6'>
+            <div className='font-semibold text-slate-500'>
+              {new Intl.NumberFormat('en-GB', {
+                style: 'currency',
+                currency: 'GBP',
+              }).format(event.attributes.cost)}
+            </div>
+            {session.isLoggedIn ? (
+              event.attributes.availability === 'Available' &&
+              event.attributes.ticketsAvailable > 0 && (
+                <CheckoutForm event={event} />
+              )
+            ) : (
+              <a href='/auth/login' className='btn max-w-max'>
+                Login to buy ticket
+              </a>
+            )}
+          </div>
         </div>
       </section>
     </div>

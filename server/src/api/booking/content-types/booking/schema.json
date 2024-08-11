@@ -12,7 +12,7 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "amount": {
+    "amount_total": {
       "type": "decimal",
       "required": true,
       "min": 0
@@ -26,7 +26,8 @@
       ]
     },
     "stripeData": {
-      "type": "json"
+      "type": "json",
+      "private": true
     },
     "event": {
       "type": "relation",
@@ -38,6 +39,11 @@
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
       "inversedBy": "bookings"
+    },
+    "quantity": {
+      "type": "integer",
+      "min": 1,
+      "required": true
     }
   }
 }
