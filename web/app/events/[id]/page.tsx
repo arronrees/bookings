@@ -32,7 +32,7 @@ export default async function EventPage({
 
   return (
     <div>
-      <section className='grid gap-4 md:gap-6 max-w-2xl mx-auto'>
+      <section className='grid gap-4 md:gap-6'>
         <div className='relative h-[350px]'>
           <Image
             src={`${API_URL}${event.attributes.image.data.attributes.url}`}

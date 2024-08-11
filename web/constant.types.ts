@@ -60,3 +60,19 @@ export type User = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type Booking = {
+  id: number;
+  attributes: {
+    createdAt: string;
+    updatedAt: string;
+    publishedAt: string;
+    status: 'Paid' | 'Processing' | 'Cancelled';
+    quantity: number;
+    amount_total: number;
+    purchaseDate: string;
+    event: {
+      data: Event;
+    };
+  };
+};

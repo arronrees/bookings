@@ -32,6 +32,9 @@ export async function POST(request: Request) {
     case 'checkout.session.completed':
       const data = event.data.object;
 
+      const purchaseDate = new Date(0);
+      purchaseDate.setUTCSeconds(data.created);
+
       const updateBooking = await fetch(
         `${API_URL}/api/bookings/${data.metadata?.bookingId}`,
         {
@@ -44,6 +47,7 @@ export async function POST(request: Request) {
             data: {
               status: 'Paid',
               stripeData: data,
+              purchaseDate,
             },
           }),
         }

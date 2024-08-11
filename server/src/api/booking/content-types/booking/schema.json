@@ -44,6 +44,9 @@
       "type": "integer",
       "min": 1,
       "required": true
+    },
+    "purchaseDate": {
+      "type": "datetime"
     }
   }
 }

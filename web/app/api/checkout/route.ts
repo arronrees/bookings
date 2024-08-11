@@ -91,8 +91,8 @@ export async function POST(request: Request) {
     },
     body: JSON.stringify({
       data: {
-        user: user.id,
-        event: event.id,
+        user: { connect: [user.id] },
+        event: { connect: [event.id] },
         status: 'Processing',
         quantity,
         amount_total: quantity * event.attributes.cost,

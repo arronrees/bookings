@@ -402,6 +402,7 @@ export interface ApiBookingBooking extends Schema.CollectionType {
         },
         number
       >;
+    purchaseDate: Attribute.DateTime;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

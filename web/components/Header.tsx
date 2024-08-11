@@ -41,20 +41,28 @@ export default async function Header() {
         </div>
         <div className='flex flex-1 justify-end'>
           {session.userId ? (
-            <form
-              action={async () => {
-                'use server';
-
-                await logout();
-              }}
-            >
-              <button
-                type='submit'
-                className='rounded bg-rose-400 text-white py-2 px-4 hover:bg-rose-500 focus:bg-rose-600 active:bg-rose-700 text-center text-sm'
+            <div className='flex items-center gap-4'>
+              <a
+                href='/bookings'
+                className='text-sm font-semibold leading-6 text-gray-900'
               >
-                Logout
-              </button>
-            </form>
+                My Bookings
+              </a>
+              <form
+                action={async () => {
+                  'use server';
+
+                  await logout();
+                }}
+              >
+                <button
+                  type='submit'
+                  className='rounded bg-rose-400 text-white py-2 px-4 hover:bg-rose-500 focus:bg-rose-600 active:bg-rose-700 text-center text-sm'
+                >
+                  Logout
+                </button>
+              </form>
+            </div>
           ) : (
             <a
               href='/auth/login'
