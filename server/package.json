@@ -14,7 +14,7 @@
     "@strapi/plugin-cloud": "4.25.7",
     "@strapi/plugin-i18n": "4.25.7",
     "@strapi/plugin-users-permissions": "4.25.7",
-    "@strapi/provider-email-amazon-ses": "^4.25.7",
+    "@strapi/provider-email-nodemailer": "^4.25.7",
     "@strapi/strapi": "4.25.7",
     "pg": "8.8.0",
     "react": "^18.0.0",

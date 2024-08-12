@@ -1,9 +1,6 @@
 'use client';
 import { resetPassword } from '@/app/lib/actions/auth';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
-import { toast } from 'sonner';
 
 const initialState = {
   errorMessage: null,
@@ -13,16 +10,6 @@ const initialState = {
 export default function ResetPasswordForm({ code }: { code: string }) {
   const [state, formAction] = useFormState(resetPassword, initialState);
   const { pending } = useFormStatus();
-
-  const router = useRouter();
-
-  useEffect(() => {
-    if (state.success) {
-      toast('Password reset successfully, please login.');
-
-      router.push('/auth/login');
-    }
-  }, [state.success, router]);
 
   return (
     <form className='flex flex-col gap-4' action={formAction}>
@@ -40,7 +27,7 @@ export default function ResetPasswordForm({ code }: { code: string }) {
           id='password'
         />
       </div>
-      <div>
+      <div className='flex flex-col gap-1'>
         <label
           className='font-semibold text-slate-500 text-xs block leading-normal'
           htmlFor='passwordConfirmation'

@@ -1,8 +1,6 @@
 'use client';
 import { forgotPassword } from '@/app/lib/actions/auth';
-import { useEffect } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
-import { toast } from 'sonner';
 
 const initialState = {
   errorMessage: null,
@@ -12,12 +10,6 @@ const initialState = {
 export default function ForgotPasswordForm() {
   const [state, formAction] = useFormState(forgotPassword, initialState);
   const { pending } = useFormStatus();
-
-  useEffect(() => {
-    if (state.success) {
-      toast('We have sent you an email to reset your password.');
-    }
-  }, [state.success]);
 
   return (
     <form className='flex flex-col gap-4' action={formAction}>

@@ -1,15 +1,18 @@
 export default ({ env }) => ({
   email: {
     config: {
-      provider: "amazon-ses",
+      provider: "nodemailer",
       providerOptions: {
-        key: env("AWS_SES_KEY"),
-        secret: env("AWS_SES_SECRET"),
-        amazon: "https://email-smtp.eu-west-2.amazonaws.com",
+        host: env("SMTP_HOST_NAME"),
+        port: env("SMTP_PORT"),
+        auth: {
+          user: env("SMTP_USER"),
+          pass: env("SMTP_PASS"),
+        },
       },
       settings: {
-        defaultFrom: env("SMTP_DEFAULT_FROM"),
-        defaultReplyTo: env("SMTP_DEFAULT_FROM"),
+        defaultFrom: env("SMTP_FROM_ADDRESS"),
+        defaultReplyTo: env("SMTP_FROM_ADDRESS"),
       },
     },
   },

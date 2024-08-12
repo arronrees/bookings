@@ -127,8 +127,6 @@ export async function forgotPassword(
       email: formData.get('email'),
     });
 
-    console.log(response.data.error);
-
     return { errorMessage: null, success: true };
   } catch (err) {
     console.error('Error fetching forgot password, ', err);
