@@ -1,7 +1,10 @@
 'use client';
 
 import { signup } from '@/app/lib/actions/auth';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
+import { toast } from 'sonner';
 
 const initialState = {
   errorMessage: null,
@@ -11,6 +14,19 @@ const initialState = {
 export default function RegisterForm() {
   const [state, formAction] = useFormState(signup, initialState);
   const { pending } = useFormStatus();
+
+  const router = useRouter();
+
+  function createToast() {
+    toast('Registration successful');
+  }
+
+  useEffect(() => {
+    if (state.success) {
+      createToast();
+      router.push('/auth/login');
+    }
+  }, [state.success, router]);
 
   return (
     <form className='flex flex-col gap-4' action={formAction}>

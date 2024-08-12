@@ -1,6 +1,9 @@
 'use client';
 import { login } from '@/app/lib/actions/auth';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
+import { toast } from 'sonner';
 
 const initialState = {
   errorMessage: null,
@@ -10,6 +13,19 @@ const initialState = {
 export default function LoginForm() {
   const [state, formAction] = useFormState(login, initialState);
   const { pending } = useFormStatus();
+
+  const router = useRouter();
+
+  function createToast() {
+    toast('Login successful');
+  }
+
+  useEffect(() => {
+    if (state.success) {
+      createToast();
+      router.push('/auth/login');
+    }
+  }, [state.success, router]);
 
   return (
     <form className='flex flex-col gap-4' action={formAction}>

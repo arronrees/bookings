@@ -1,6 +1,9 @@
 'use client';
 import { forgotPassword } from '@/app/lib/actions/auth';
 import { useFormState, useFormStatus } from 'react-dom';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { toast } from 'sonner';
 
 const initialState = {
   errorMessage: null,
@@ -10,6 +13,19 @@ const initialState = {
 export default function ForgotPasswordForm() {
   const [state, formAction] = useFormState(forgotPassword, initialState);
   const { pending } = useFormStatus();
+
+  const router = useRouter();
+
+  function createToast() {
+    toast('We have sent instructions to your email.');
+  }
+
+  useEffect(() => {
+    if (state.success) {
+      createToast();
+      router.push('/auth/login');
+    }
+  }, [state.success, router]);
 
   return (
     <form className='flex flex-col gap-4' action={formAction}>
