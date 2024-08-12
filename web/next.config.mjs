@@ -9,6 +9,12 @@ const nextConfig = {
         port: '1337',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'api.bookings.arronrees.co.uk',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };

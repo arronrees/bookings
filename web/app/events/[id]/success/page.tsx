@@ -55,7 +55,7 @@ export default async function CheckoutPage({
             <span className='block font-semibold text-xl mb-1'>
               Congratulations!
             </span>
-            You're going to see{' '}
+            You&apos;re going to see{' '}
             <span className='font-medium'>{event.attributes.title}</span> on{' '}
             <span className='font-medium'>
               {new Date(event.attributes.date).toDateString()}

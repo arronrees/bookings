@@ -16,7 +16,7 @@ export default function BookingItem({ booking }: { booking: Booking }) {
       </div>
       <div className='flex flex-col gap-3 text-sm p-6'>
         <div className='grid gap-2 md:grid-cols-[10rem,1fr]'>
-          <p className='font-medium text-slate-500'>You're seeing</p>
+          <p className='font-medium text-slate-500'>You&apos;re seeing</p>
           <a
             href={`/events/${booking.attributes.event.data.id}`}
             className='font-semibold'

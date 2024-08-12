@@ -38,7 +38,7 @@ export default async function BookingPage({
     <div>
       <p className='mb-6'>
         <span className='block font-semibold text-2xl mb-1'>Your Booking</span>
-        You're going to see{' '}
+        You&apos;re going to see{' '}
         <span className='font-medium'>
           {booking.attributes.event.data.attributes.title}
         </span>{' '}
@@ -61,7 +61,7 @@ export default async function BookingPage({
         </div>
         <div className='flex flex-col gap-3 text-sm'>
           <div className='grid gap-2 md:grid-cols-[10rem,1fr]'>
-            <p className='font-medium text-slate-500'>You're seeing</p>
+            <p className='font-medium text-slate-500'>You&apos;re seeing</p>
             <p>
               <a
                 href={`/events/${booking.attributes.event.data.id}`}

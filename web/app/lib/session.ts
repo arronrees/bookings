@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 
-import { SessionOptions, getIronSession } from 'iron-session';
+import { IronSession, SessionOptions, getIronSession } from 'iron-session';
 import { revalidatePath } from 'next/cache';
 
 export interface SessionData {
@@ -23,7 +23,7 @@ export const sessionOptions: SessionOptions = {
   },
 };
 
-export async function getSession(): Promise<SessionData> {
+export async function getSession(): Promise<IronSession<SessionData>> {
   const session = await getIronSession<SessionData>(cookies(), sessionOptions);
 
   if (!session.isLoggedIn) {
