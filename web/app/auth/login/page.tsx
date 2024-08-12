@@ -15,7 +15,10 @@ export default async function Login() {
       <section className='bg-slate-50 shadow p-4 max-w-md mx-auto'>
         <LoginForm />
         <div className='mt-4'>
-          <a href='' className='text-slate-500 font-medium text-xs'>
+          <a
+            href='/auth/forgot-password'
+            className='text-slate-500 font-medium text-xs'
+          >
             Forgot your password?
           </a>
         </div>

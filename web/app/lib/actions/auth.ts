@@ -4,6 +4,8 @@ import { API_URL } from '@/constants';
 import axios from 'axios';
 import { createSession, deleteSession } from '../session';
 import {
+  checkForgotPasswordObjectValid,
+  checkResetPasswordObjectValid,
   checkUserSigninObjectValid,
   checkUserSignupObjectValid,
 } from '../validation';
@@ -99,4 +101,79 @@ export async function login(
 export async function logout() {
   await deleteSession();
   return;
+}
+
+export async function forgotPassword(
+  prevState: {
+    errorMessage: string | null;
+    success: boolean;
+  },
+  formData: FormData
+) {
+  const data = {
+    email: formData.get('email'),
+  };
+
+  const { error: validationError } = await checkForgotPasswordObjectValid(data);
+
+  if (validationError) {
+    console.error('Forgot Password Validation Error: ', validationError);
+
+    return { errorMessage: validationError, success: false };
+  }
+
+  try {
+    const response = await axios.post(`${API_URL}/api/auth/forgot-password`, {
+      email: formData.get('email'),
+    });
+
+    console.log(response.data.error);
+
+    return { errorMessage: null, success: true };
+  } catch (err) {
+    console.error('Error fetching forgot password, ', err);
+
+    return {
+      errorMessage: 'Failed to request password, please try again.',
+      success: false,
+    };
+  }
+}
+
+export async function resetPassword(
+  prevState: {
+    errorMessage: string | null;
+    success: boolean;
+  },
+  formData: FormData
+) {
+  const data = {
+    password: formData.get('password'),
+    passwordConfirmation: formData.get('passwordConfirmation'),
+  };
+
+  const { error: validationError } = await checkResetPasswordObjectValid(data);
+
+  if (validationError) {
+    console.error('Forgot Password Validation Error: ', validationError);
+
+    return { errorMessage: validationError, success: false };
+  }
+
+  try {
+    const response = await axios.post(`${API_URL}/api/auth/reset-password`, {
+      code: formData.get('code'),
+      password: formData.get('password'),
+      passwordConfirmation: formData.get('passwordConfirmation'),
+    });
+
+    return { errorMessage: null, success: true };
+  } catch (err) {
+    console.error('Error fetching reseting password, ', err);
+
+    return {
+      errorMessage: 'Failed to reset password, please try again.',
+      success: false,
+    };
+  }
 }
