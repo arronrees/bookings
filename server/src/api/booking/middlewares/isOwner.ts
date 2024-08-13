@@ -8,7 +8,7 @@ export default (config, { strapi }: { strapi: Strapi }) => {
   // Add your own logic here.
   return async (ctx, next) => {
     const user = ctx.state.user;
-    const entryId = ctx.params.id ? ctx.params.id : undefined;
+    const entryId = ctx.params?.id ? ctx.params.id : undefined;
     let entry: any = {};
 
     // skip if accessing via api token, used for checkout
@@ -17,6 +17,11 @@ export default (config, { strapi }: { strapi: Strapi }) => {
       ctx.state?.auth?.strategy?.name === "api-token"
     ) {
       await next();
+      return;
+    }
+
+    if (!user) {
+      return ctx.unauthorized("This action is unauthorized.");
     }
 
     /**

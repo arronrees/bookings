@@ -146,7 +146,7 @@ export async function POST(request: Request) {
   try {
     const session = await stripe.checkout.sessions.create({
       metadata: {
-        bookingId: newBooking.data.id,
+        bookingId: newBooking.data?.id,
       },
       customer_email: user.email,
       mode: 'payment',
