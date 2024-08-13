@@ -9,15 +9,14 @@ export default (config, { strapi }: { strapi: Strapi }) => {
   return async (ctx, next) => {
     const user = ctx.state.user;
     const entryId = ctx.params.id ? ctx.params.id : undefined;
-    let entry: any = null;
-    let entries: any = null;
+    let entry: any = {};
 
-    // skip if accessing via api token
+    // skip if accessing via api token, used for checkout
     if (
       ctx.state?.isAuthenticated &&
       ctx.state?.auth?.strategy?.name === "api-token"
     ) {
-      return next();
+      await next();
     }
 
     /**
@@ -33,13 +32,6 @@ export default (config, { strapi }: { strapi: Strapi }) => {
           populate: "*",
         }
       );
-    } else {
-      entries = await strapi.entityService.findMany("api::booking.booking", {
-        filters: {
-          user: user,
-        },
-        populate: "*",
-      });
     }
 
     /**
@@ -47,19 +39,10 @@ export default (config, { strapi }: { strapi: Strapi }) => {
      * to decide whether the request can be fulfilled
      * by going forward in the Strapi backend server
      */
-
-    if (entry) {
-      if (user.id !== entry.user.id) {
-        return ctx.unauthorized("This action is unauthorized.");
-      } else {
-        return next();
-      }
+    if (user.id !== entry.user?.id) {
+      return ctx.unauthorized("This action is unauthorized.");
+    } else {
+      await next();
     }
-
-    if (entries) {
-      return next();
-    }
-
-    return ctx.unauthorized("This action is unauthorized.");
   };
 };

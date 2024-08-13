@@ -389,11 +389,6 @@ export interface ApiBookingBooking extends Schema.CollectionType {
       'oneToOne',
       'api::event.event'
     >;
-    user: Attribute.Relation<
-      'api::booking.booking',
-      'manyToOne',
-      'plugin::users-permissions.user'
-    >;
     quantity: Attribute.Integer &
       Attribute.Required &
       Attribute.SetMinMax<
@@ -403,6 +398,11 @@ export interface ApiBookingBooking extends Schema.CollectionType {
         number
       >;
     purchaseDate: Attribute.DateTime;
+    user: Attribute.Relation<
+      'api::booking.booking',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

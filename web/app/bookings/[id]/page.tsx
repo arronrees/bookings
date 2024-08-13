@@ -2,7 +2,6 @@ import { redirect } from 'next/navigation';
 import { getSession } from '../../lib/session';
 import { Booking } from '@/constant.types';
 import { API_URL } from '@/constants';
-import BookingItem from '@/components/BookingItem';
 import Image from 'next/image';
 
 export default async function BookingPage({
@@ -11,6 +10,10 @@ export default async function BookingPage({
   params: { id: string };
 }) {
   if (!params.id) {
+    return redirect('/bookings');
+  }
+
+  if (!Number(params.id)) {
     return redirect('/bookings');
   }
 
@@ -33,6 +36,10 @@ export default async function BookingPage({
   }
 
   const booking = await fetchBooking();
+
+  if (!booking) {
+    redirect('/bookings');
+  }
 
   return (
     <div>

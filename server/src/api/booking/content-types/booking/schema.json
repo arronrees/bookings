@@ -34,12 +34,6 @@
       "relation": "oneToOne",
       "target": "api::event.event"
     },
-    "user": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "bookings"
-    },
     "quantity": {
       "type": "integer",
       "min": 1,
@@ -47,6 +41,11 @@
     },
     "purchaseDate": {
       "type": "datetime"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
     }
   }
 }

@@ -13,14 +13,12 @@ export default async function MyBookings() {
 
   async function fetchBookings() {
     const data = await fetch(
-      `${API_URL}/api/bookings?populate[event][populate][0]=image`,
+      `${API_URL}/api/bookings?populate[event][populate][0]=image&filters[user][id][$eq]=${session.userId}`,
       {
         headers: { Authorization: `Bearer ${session.token}` },
         cache: 'no-store',
       }
     ).then((res) => res.json());
-
-    console.log(data);
 
     return data.data as Booking[];
   }
