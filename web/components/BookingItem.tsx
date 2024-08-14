@@ -10,7 +10,7 @@ export default function BookingItem({ booking }: { booking: Booking }) {
           src={`${API_URL}${booking.attributes.event.data.attributes.image.data.attributes.formats.medium.url}`}
           alt=''
           fill
-          className='object-cover rounded-t'
+          className='object-cover rounded-t md:rounded-l md:rounded-tr-none'
           sizes='80vw'
         />
       </div>

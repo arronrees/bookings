@@ -44,7 +44,7 @@ export default async function Header() {
             <div className='flex items-center gap-4'>
               <a
                 href='/bookings'
-                className='text-sm font-semibold leading-6 text-gray-900'
+                className='text-sm font-semibold leading-6 text-gray-900 text-center'
               >
                 My Bookings
               </a>
